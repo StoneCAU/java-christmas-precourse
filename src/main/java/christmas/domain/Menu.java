@@ -1,5 +1,9 @@
 package christmas.domain;
 
+import christmas.exception.ChristmasException;
+import christmas.exception.ErrorMessage;
+import java.util.Arrays;
+
 public enum Menu {
     // 에피타이저
     MUSHROOM_SOUP(MenuType.APPETIZER, "양송이수프", new Money(6000)),
@@ -41,6 +45,13 @@ public enum Menu {
 
     public Money getMoney() {
         return money;
+    }
+
+    public static Menu getMenu(String menuName) {
+        return Arrays.stream(Menu.values())
+                .filter(menu -> menu.getName().equals(menuName))
+                .findFirst()
+                .orElseThrow(() -> new ChristmasException(ErrorMessage.INVALID_ORDER));
     }
 
     @Override
