@@ -1,5 +1,6 @@
 package christmas.view;
 
+import christmas.domain.Badge;
 import christmas.domain.Discount;
 import christmas.domain.Event;
 import christmas.domain.Menu;
@@ -37,6 +38,7 @@ public class OutputView {
         Order bonus = Event.getBonus(orders.getTotalPrice().getPrice());
         if (bonus == null) {
             System.out.println("없음");
+            printNewLine();
             return;
         }
         System.out.println(bonus.getMenu().getName() + " " + bonus.getQuantity() + "개");
@@ -46,6 +48,11 @@ public class OutputView {
     public static void printDiscounts(Discount discount) {
         System.out.println("<헤택 내역>");
         List<Event> events = discount.getEvents();
+        if (events.isEmpty()) {
+            System.out.println("없음");
+            printNewLine();
+            return;
+        }
         if (events.contains(Event.CHRISTMAS_D_DAY)) printChristmasDiscount(discount);
         if (events.contains(Event.WEEKDAY)) printWeekdayDiscount(discount);
         if (events.contains(Event.WEEKEND)) printWeekendDiscount(discount);
@@ -57,6 +64,11 @@ public class OutputView {
 
     public static void printTotalDiscount(Discount discount) {
         System.out.println("<총혜택 금액>");
+        if (discount.getTotalDiscount().getPrice() == 0) {
+            System.out.println("0원");
+            printNewLine();
+            return;
+        }
         System.out.println("-" + discount.getTotalDiscount());
         printNewLine();
     }
@@ -65,6 +77,12 @@ public class OutputView {
         System.out.println("<할인 후 예상 결제 금액>");
         System.out.println(discount.getAfterDiscount());
         printNewLine();
+    }
+
+    public static void printBadge(Discount discount) {
+        System.out.println("<12월 이벤트 배지>");
+        Badge badge = Badge.getBadge(discount.getTotalDiscount().getPrice());
+        System.out.println(badge.getName());
     }
 
     public static void printErrorMessage(String message) {

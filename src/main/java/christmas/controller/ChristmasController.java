@@ -55,5 +55,6 @@ public class ChristmasController {
         OutputView.printDiscounts(discount);
         OutputView.printTotalDiscount(discount);
         OutputView.printAfterDiscount(discount);
+        OutputView.printBadge(discount);
     }
 }

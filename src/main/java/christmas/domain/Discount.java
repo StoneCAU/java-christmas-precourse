@@ -2,16 +2,20 @@ package christmas.domain;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Discount {
     private List<Event> events;
     private Visit visit;
     private Orders orders;
+    private Order bonus;
 
     public Discount(Visit visit, Orders orders) {
         this.visit = visit;
         this.orders = orders;
-        this.events = getAvailableEvents(visit, orders);
+        this.events = getAvailableEvents();
+        deleteEvent();
+        bonus = Event.getBonus(orders.getTotalPrice().getPrice());
     }
 
     public List<Event> getEvents() {
@@ -28,7 +32,6 @@ public class Discount {
 
     public Money getTotalDiscount() {
         int total = 0;
-        Order bonus = Event.getBonus(orders.getTotalPrice().getPrice());
 
         if (events.contains(Event.CHRISTMAS_D_DAY)) total += Event.getChristmasDiscount(visit.getDay()).getPrice();
         if (events.contains(Event.WEEKDAY)) total += Event.getWeekdayDiscount(orders).getPrice();
@@ -40,14 +43,45 @@ public class Discount {
     }
 
     public Money getAfterDiscount() {
+        if (bonus != null) return new Money(orders.getTotalPrice().getPrice() - getTotalDiscount().getPrice() + bonus.getMenu().getMoney().getPrice());
         return new Money(orders.getTotalPrice().getPrice() - getTotalDiscount().getPrice());
     }
 
-    private List<Event> getAvailableEvents(Visit visit, Orders orders) {
+    private List<Event> getAvailableEvents() {
         int visitDay = visit.getDay();
 
         return Arrays.stream(Event.values())
                 .filter(event -> event.getEventDays().contains(visitDay))
-                .toList();
+                .collect(Collectors.toList());
+    }
+
+    private void deleteEvent() {
+        if (hasWeekday() && !hasDessert()) {
+            events.remove(Event.WEEKDAY);
+        }
+
+        if (hasWeekend() && !hasMain()) {
+            events.remove(Event.WEEKEND);
+        }
+    }
+
+    private boolean hasWeekday() {
+        return events.stream()
+                .anyMatch(event -> event.getName().equals(Event.WEEKDAY.getName()));
+    }
+
+    private boolean hasWeekend() {
+        return events.stream()
+                .anyMatch(event -> event.getName().equals(Event.WEEKEND.getName()));
+    }
+
+    private boolean hasDessert() {
+        return orders.getOrders().stream()
+                .anyMatch(order -> order.getMenu().getMenuType() == MenuType.DESSERT);
+    }
+
+    private boolean hasMain() {
+        return orders.getOrders().stream()
+                .anyMatch(order -> order.getMenu().getMenuType() == MenuType.MAIN);
     }
 }

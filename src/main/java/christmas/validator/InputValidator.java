@@ -1,6 +1,7 @@
 package christmas.validator;
 
 import christmas.domain.Menu;
+import christmas.domain.MenuType;
 import christmas.domain.Order;
 import christmas.domain.Orders;
 import christmas.domain.Visit;
@@ -80,6 +81,14 @@ public class InputValidator {
         if (isDuplicate(orderList)) {
             throw new ChristmasException(ErrorMessage.INVALID_ORDER);
         }
+
+        if (orderList.size() > 20) {
+            throw new ChristmasException(ErrorMessage.INVALID_ORDER);
+        }
+
+        if (isOnlyDrink(orderList)) {
+            throw new ChristmasException(ErrorMessage.INVALID_ORDER);
+        }
     }
 
     private static boolean isDuplicate(List<Order> orderList) {
@@ -87,5 +96,9 @@ public class InputValidator {
                 .map(Order::getMenu)
                 .distinct()
                 .count() != orderList.size();
+    }
+
+    private static boolean isOnlyDrink(List<Order> orderList) {
+        return orderList.stream().noneMatch(order -> order.getMenu().getMenuType() != MenuType.DRINK);
     }
 }
