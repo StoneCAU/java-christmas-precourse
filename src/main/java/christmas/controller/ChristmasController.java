@@ -53,5 +53,7 @@ public class ChristmasController {
     private void getInfoAfterDiscount(Visit visit, Orders orders) {
         Discount discount = new Discount(visit, orders);
         OutputView.printDiscounts(discount);
+        OutputView.printTotalDiscount(discount);
+        OutputView.printAfterDiscount(discount);
     }
 }

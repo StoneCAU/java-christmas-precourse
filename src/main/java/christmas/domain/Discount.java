@@ -26,6 +26,23 @@ public class Discount {
         return orders;
     }
 
+    public Money getTotalDiscount() {
+        int total = 0;
+        Order bonus = Event.getBonus(orders.getTotalPrice().getPrice());
+
+        if (events.contains(Event.CHRISTMAS_D_DAY)) total += Event.getChristmasDiscount(visit.getDay()).getPrice();
+        if (events.contains(Event.WEEKDAY)) total += Event.getWeekdayDiscount(orders).getPrice();
+        if (events.contains(Event.WEEKEND)) total += Event.getWeekendDiscount(orders).getPrice();
+        if (events.contains(Event.SPECIAL)) total += Event.getSpecialDiscount(visit.getDay()).getPrice();
+        if (bonus != null) total += bonus.getMenu().getMoney().getPrice() * bonus.getQuantity();
+
+        return new Money(total);
+    }
+
+    public Money getAfterDiscount() {
+        return new Money(orders.getTotalPrice().getPrice() - getTotalDiscount().getPrice());
+    }
+
     private List<Event> getAvailableEvents(Visit visit, Orders orders) {
         int visitDay = visit.getDay();
 

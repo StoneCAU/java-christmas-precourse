@@ -55,6 +55,18 @@ public class OutputView {
         printNewLine();
     }
 
+    public static void printTotalDiscount(Discount discount) {
+        System.out.println("<총혜택 금액>");
+        System.out.println("-" + discount.getTotalDiscount());
+        printNewLine();
+    }
+
+    public static void printAfterDiscount(Discount discount) {
+        System.out.println("<할인 후 예상 결제 금액>");
+        System.out.println(discount.getAfterDiscount());
+        printNewLine();
+    }
+
     public static void printErrorMessage(String message) {
         printNewLine();
         System.out.println(message);
