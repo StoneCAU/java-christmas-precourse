@@ -46,7 +46,7 @@ public class OutputView {
     }
 
     public static void printDiscounts(Discount discount) {
-        System.out.println("<헤택 내역>");
+        System.out.println("<혜택 내역>");
         List<Event> events = discount.getEvents();
         if (events.isEmpty()) {
             System.out.println("없음");
