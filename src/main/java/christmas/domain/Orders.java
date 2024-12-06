@@ -13,4 +13,15 @@ public class Orders {
     public List<Order> getOrders() {
         return new ArrayList<>(orders);
     }
+
+    public Money getTotalPriceBeforeDiscount() {
+        int total = orders.stream()
+                .mapToInt(order -> {
+                    Menu menu = order.getMenu();
+                    return menu.getMoney().getPrice() * order.getQuantity();
+                })
+                .sum();
+
+        return new Money(total);
+    }
 }

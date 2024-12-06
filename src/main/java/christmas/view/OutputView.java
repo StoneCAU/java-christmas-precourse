@@ -18,6 +18,13 @@ public class OutputView {
     public static void printOrders(Orders orders) {
         System.out.println("<주문 메뉴>");
         orders.getOrders().forEach(System.out::println);
+        printNewLine();
+    }
+
+    public static void printTotalPriceBeforeDiscount(Orders orders) {
+        System.out.println("<할인 전 총주문 금액>");
+        System.out.println(orders.getTotalPriceBeforeDiscount().toString());
+        printNewLine();
     }
 
     public static void printErrorMessage(String message) {

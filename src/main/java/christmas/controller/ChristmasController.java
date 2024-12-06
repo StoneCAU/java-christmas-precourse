@@ -40,5 +40,6 @@ public class ChristmasController {
     private void getResults(Visit visit, Orders orders) {
         OutputView.printPromotionTitle(visit);
         OutputView.printOrders(orders);
+        OutputView.printTotalPriceBeforeDiscount(orders);
     }
 }
