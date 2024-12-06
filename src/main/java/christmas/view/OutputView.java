@@ -1,10 +1,12 @@
 package christmas.view;
 
+import christmas.domain.Discount;
 import christmas.domain.Event;
 import christmas.domain.Menu;
 import christmas.domain.Order;
 import christmas.domain.Orders;
 import christmas.domain.Visit;
+import java.util.List;
 
 public class OutputView {
     private static final String NEW_LINE = System.lineSeparator();
@@ -41,9 +43,41 @@ public class OutputView {
         printNewLine();
     }
 
+    public static void printDiscounts(Discount discount) {
+        System.out.println("<헤택 내역>");
+        List<Event> events = discount.getEvents();
+        if (events.contains(Event.CHRISTMAS_D_DAY)) printChristmasDiscount(discount);
+        if (events.contains(Event.WEEKDAY)) printWeekdayDiscount(discount);
+        if (events.contains(Event.WEEKEND)) printWeekendDiscount(discount);
+        if (events.contains(Event.SPECIAL)) printSpecialDiscount(discount);
+        if (Event.getBonus(discount.getOrders().getTotalPrice().getPrice()) != null)
+            printBonusDiscount(discount);
+        printNewLine();
+    }
+
     public static void printErrorMessage(String message) {
         printNewLine();
         System.out.println(message);
+    }
+
+    private static void printChristmasDiscount(Discount discount) {
+        System.out.printf("크리스마스 디데이 할인: -%s%n", Event.getChristmasDiscount(discount.getVisit().getDay()));
+    }
+
+    private static void printWeekdayDiscount(Discount discount) {
+        System.out.printf("평일 할인: -%s%n", Event.getWeekdayDiscount(discount.getOrders()));
+    }
+
+    private static void printWeekendDiscount(Discount discount) {
+        System.out.printf("주말 할인: -%s%n", Event.getWeekendDiscount(discount.getOrders()));
+    }
+
+    private static void printSpecialDiscount(Discount discount) {
+        System.out.printf("특별 할인: -%s%n", Event.getSpecialDiscount(discount.getVisit().getDay()));
+    }
+
+    private static void printBonusDiscount(Discount discount) {
+        System.out.printf("증정 이벤트: -%s%n", Event.getBonus(discount.getOrders().getTotalPrice().getPrice()).getMenu().getMoney());
     }
 
     private static void printNewLine() {

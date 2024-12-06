@@ -1,5 +1,6 @@
 package christmas.controller;
 
+import christmas.domain.Discount;
 import christmas.domain.Orders;
 import christmas.domain.Visit;
 import christmas.exception.ChristmasException;
@@ -40,11 +41,17 @@ public class ChristmasController {
     private void getResults(Visit visit, Orders orders) {
         OutputView.printPromotionTitle(visit);
         getInfoBeforeDiscount(orders);
+        getInfoAfterDiscount(visit, orders);
     }
 
     private void getInfoBeforeDiscount(Orders orders) {
         OutputView.printOrders(orders);
         OutputView.printTotalPriceBeforeDiscount(orders);
         OutputView.printPresentMenu(orders);
+    }
+
+    private void getInfoAfterDiscount(Visit visit, Orders orders) {
+        Discount discount = new Discount(visit, orders);
+        OutputView.printDiscounts(discount);
     }
 }
