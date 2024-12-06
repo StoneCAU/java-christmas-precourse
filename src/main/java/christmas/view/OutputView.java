@@ -1,5 +1,8 @@
 package christmas.view;
 
+import christmas.domain.Event;
+import christmas.domain.Menu;
+import christmas.domain.Order;
 import christmas.domain.Orders;
 import christmas.domain.Visit;
 
@@ -23,7 +26,18 @@ public class OutputView {
 
     public static void printTotalPriceBeforeDiscount(Orders orders) {
         System.out.println("<할인 전 총주문 금액>");
-        System.out.println(orders.getTotalPriceBeforeDiscount().toString());
+        System.out.println(orders.getTotalPrice().toString());
+        printNewLine();
+    }
+
+    public static void printPresentMenu(Orders orders) {
+        System.out.println("<증정 메뉴>");
+        Order bonus = Event.getBonus(orders.getTotalPrice().getPrice());
+        if (bonus == null) {
+            System.out.println("없음");
+            return;
+        }
+        System.out.println(bonus.getMenu().getName() + " " + bonus.getQuantity() + "개");
         printNewLine();
     }
 
