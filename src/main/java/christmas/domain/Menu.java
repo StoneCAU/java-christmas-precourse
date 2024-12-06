@@ -12,7 +12,7 @@ public enum Menu {
 
     // 메인
     STEAK(MenuType.MAIN, "티본스테이크", new Money(55000)),
-    BBQ_RIP(MenuType.MAIN, "바베큐립", new Money(54000)),
+    BBQ_RIP(MenuType.MAIN, "바비큐립", new Money(54000)),
     SEA_FOOD_PASTA(MenuType.MAIN, "해산물파스타", new Money(35000)),
     CHRISTMAS_PASTA(MenuType.MAIN, "크리스마스파스타", new Money(25000)),
 

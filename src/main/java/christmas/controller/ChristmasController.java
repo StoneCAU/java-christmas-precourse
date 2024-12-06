@@ -12,6 +12,7 @@ public class ChristmasController {
         OutputView.printWelcomeMessage();
         Visit visit = getVisitDay();
         Orders orders = getOrders();
+        getResults(visit, orders);
     }
 
     private Visit getVisitDay() {
@@ -34,5 +35,10 @@ public class ChristmasController {
                 OutputView.printErrorMessage(e.getMessage());
             }
         }
+    }
+
+    private void getResults(Visit visit, Orders orders) {
+        OutputView.printPromotionTitle(visit);
+        OutputView.printOrders(orders);
     }
 }

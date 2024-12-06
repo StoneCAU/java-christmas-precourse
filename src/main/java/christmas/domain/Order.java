@@ -16,4 +16,9 @@ public class Order {
     public int getQuantity() {
         return quantity;
     }
+
+    @Override
+    public String toString() {
+        return getMenu().getName() + " " + getQuantity() + "개";
+    }
 }
